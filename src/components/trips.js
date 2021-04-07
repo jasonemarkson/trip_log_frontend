@@ -21,6 +21,9 @@ class Trips {
 
     render() {
         const tripsContainer = document.getElementById("trips-container")
-        tripsContainer.innerHTML = `${this.trips.map(trip => <li>${trip.name}</li>)}`
+        // tripsContainer.innerHTML = `this.trips.map(trip => <li>${trip.name}</li>)`
+        this.trips.forEach(e => 
+            tripsContainer.innerHTML += `<li>${e.name}</li>`)
+
     }
 }
