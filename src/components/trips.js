@@ -16,7 +16,10 @@ class Trips {
 
     addTripToDom(e) {
         e.preventDefault()
-        console.log(this.inputValue.value)
+
+        const newTrip = this.inputValue.value
+        this.tripsContainer.innerHTML +=`<li>${newTrip}</li>`
+
     }
 
     fetchAndLoadTrips() {
