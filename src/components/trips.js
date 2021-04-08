@@ -4,6 +4,19 @@ class Trips {
         this.adapter = new TripsAdapter()
         // this.bindEventListeners()
         this.fetchAndLoadTrips()
+        this.newTripsAdd()
+    }
+
+    newTripsAdd() {
+        this.tripsContainer = document.getElementById("trips-container")
+        this.inputValue = document.getElementById("new-trip-input")
+        this.form = document.getElementById("new-trip-form")
+        this.form.addEventListener('submit', this.addTripToDom.bind(this))
+    }
+
+    addTripToDom(e) {
+        e.preventDefault()
+        console.log(this.inputValue.value)
     }
 
     fetchAndLoadTrips() {
@@ -21,9 +34,8 @@ class Trips {
 
     render() {
         const tripsContainer = document.getElementById("trips-container")
-        // tripsContainer.innerHTML = `this.trips.map(trip => <li>${trip.name}</li>)`
+        
         this.trips.forEach(e => 
             tripsContainer.innerHTML += `<li>${e.name}</li>`)
-
     }
 }
