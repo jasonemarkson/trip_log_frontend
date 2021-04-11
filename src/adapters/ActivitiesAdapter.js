@@ -4,7 +4,7 @@ class ActivitiesAdapter {
     }
     
     fetchActivities() {
-        fetch(this.baseURL)
+        fetch(this.baseUrl)
         .then(response => response.json())
     }
 }

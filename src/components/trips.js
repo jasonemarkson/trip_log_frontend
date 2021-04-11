@@ -1,6 +1,6 @@
 class Trips {
     constructor() {
-        this.trips = []
+        // this.trips = []
         this.adapter = new TripsAdapter()
         this.fetchAndLoadTrips()
         this.newTripsAdd()
@@ -53,8 +53,9 @@ class Trips {
         this.adapter
         .fetchTrips()
         .then(trips => {
-            trips.forEach(trip => this.trips.push(new Trip(trip)))
-            // console.log(this.trips)
+
+            trips.forEach(trip => Trip.all.push(new Trip(trip)))
+            console.log(Trip.all)
         })
         .then(() => {
             this.render()
@@ -64,7 +65,7 @@ class Trips {
     render() {
         const tripsContainer = document.getElementById("trips-container")
         
-        this.trips.forEach(e => 
+        Trip.all.forEach(e => 
             tripsContainer.innerHTML += `
             <div id="trip-${e.id}">
                 <li>
