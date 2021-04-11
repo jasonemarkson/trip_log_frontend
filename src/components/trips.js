@@ -18,11 +18,13 @@ class Trips {
         const newTrip = this.inputValue.value
         this.tripsContainer.innerHTML +=`<li>${newTrip}</li>`
         this.handleSubmitForm()
+        
     }
 
     handleSubmitForm(e) {
         // e.preventDefault()
-        console.log("Aw sheet, here we go again")
+        const newTripForm = document.getElementById("new-trip-form")
+
         let newTripObj = {
             name: this.inputValue.value
         }
@@ -42,6 +44,7 @@ class Trips {
             this.newTripsAdd()
         })
 
+        newTripForm.reset()
     }
 
     fetchAndLoadTrips() {
@@ -61,12 +64,49 @@ class Trips {
         const tripsContainer = document.getElementById("trips-container")
         
         this.trips.forEach(e => 
-            tripsContainer.innerHTML += `<li>${e.name}</li>`)
+            tripsContainer.innerHTML += `
+            <div id="trip-${e.id}">
+            <li>${e.name}</li>
+            <button class="delete" trip-id="${e.id}">Delete</button>
+            </div>
+            `)
     }
 
 }
 
+function removeTrip(id) {
+    let trip = document.getElementById(`trip-${id}`)
+    // remove from db
+    
+        let configObj = {
+            method: 'DELETE', 
+            headers: {
+                "Content-Type": "application/json", 
+                "Accepts": "application/json"
+            },
+        }
+
+        fetch(`http://localhost:3000/trips/${id}`, configObj)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json)
+        })
+    
+    // remove from dom
+    trip.remove()
+}
+
+function handleClickAction(e) {
+    if (e.target.className === "delete") {
+        let id = parseInt(e.target.attributes[1]["nodeValue"])
+        removeTrip(id)
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    const tripsContainer = document.getElementById("trips-container")
     const newTripForm = document.getElementById("new-trip-form")
     newTripForm.addEventListener('submit', window.handleSubmitForm)
+
+    tripsContainer.addEventListener('click', handleClickAction)
 })
