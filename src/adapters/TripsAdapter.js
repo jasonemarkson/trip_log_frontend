@@ -5,8 +5,9 @@ class TripsAdapter {
         this.baseUrl = 'http://localhost:3000/trips'
     }
     
-    getTrips() {
-        return fetch(this.baseUrl).then(response => response.json()
+    fetchTrips() {
+        return fetch(this.baseUrl)
+        .then(response => response.json()
         )
     }
 }

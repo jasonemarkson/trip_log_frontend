@@ -16,7 +16,9 @@ class Trips {
     addTripToDom(e) {
         e.preventDefault()
         const newTrip = this.inputValue.value
-        this.tripsContainer.innerHTML +=`<li>${newTrip}</li>`
+        this.tripsContainer.innerHTML +=`
+        <li>${newTrip}</li>
+        `
         this.handleSubmitForm()
         
     }
@@ -49,11 +51,10 @@ class Trips {
 
     fetchAndLoadTrips() {
         this.adapter
-        .getTrips()
+        .fetchTrips()
         .then(trips => {
             trips.forEach(trip => this.trips.push(new Trip(trip)))
-            // was having trouble creating a new instance of the class Trip -- should have new Trip(trip)
-            console.log(this.trips)
+            // console.log(this.trips)
         })
         .then(() => {
             this.render()
@@ -66,7 +67,13 @@ class Trips {
         this.trips.forEach(e => 
             tripsContainer.innerHTML += `
             <div id="trip-${e.id}">
-            <li>${e.name}</li>
+                <li>
+                ${e.name}
+                <ul>
+                ${e.activities}
+                </ul>
+                </li>
+            <button class="Add Activity" trip-id="${e.id}">Add Activity</button>
             <button class="delete" trip-id="${e.id}">Delete</button>
             </div>
             `)
@@ -89,11 +96,16 @@ function removeTrip(id) {
         fetch(`http://localhost:3000/trips/${id}`, configObj)
         .then(res => res.json())
         .then(json => {
-            console.log(json)
+            alert(json.message)
         })
     
     // remove from dom
     trip.remove()
+}
+
+function addActivity(id) {
+    let trip = document.getElementById(`trip-${id}`)
+    console.log("I'm in the addActivity function")
 }
 
 function handleClickAction(e) {
@@ -101,11 +113,18 @@ function handleClickAction(e) {
         let id = parseInt(e.target.attributes[1]["nodeValue"])
         removeTrip(id)
     }
+    else if (e.target.className === "Add Activity") {
+        let id = parseInt(e.target.attributes[1]["nodeValue"])
+        addActivity(id)
+
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const tripsContainer = document.getElementById("trips-container")
     const newTripForm = document.getElementById("new-trip-form")
+    tripsAdapter.fetchTrips()
+    activitiesAdapter.fetchActivities()
     newTripForm.addEventListener('submit', window.handleSubmitForm)
 
     tripsContainer.addEventListener('click', handleClickAction)
