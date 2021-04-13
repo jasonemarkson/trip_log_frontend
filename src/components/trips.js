@@ -138,7 +138,6 @@ function handleActivityForm(e) {
     const name = document.getElementById("new-activity-name").value
     const description = document.getElementById("new-activity-description").value
     const tripId = document.getElementsByName("trip-id")[0]["id"]
-    // console.log("I'm in playaaaaa")
 
     let newActObj = {
         name: name,
@@ -158,7 +157,7 @@ function handleActivityForm(e) {
     fetch('http://localhost:3000/activities', configObj)
     .then(res => res.json())
     .then(json => {
-        this.addActivityToDom()
+        this.addActivityToDom(e)
     })
     activityForm.reset()
 
