@@ -105,8 +105,21 @@ function removeTrip(id) {
 }
 
 function addActivity(id) {
-    let trip = document.getElementById(`trip-${id}`)
-    console.log("I'm in the addActivity function")
+    const trip = Trip.all.find(element => element.id === id)
+    const activity = document.getElementById(`trip-${id}`)
+    
+    activity.innerHTML += `
+    <h4>Add an activity for ${trip["name"]}</h4>
+    <form id="new-activity-form">
+        <p>Name: <input type="text" id="new-activity-name"></p>
+        <p>Description: <input type="text" id="new-activity-description"></p>
+        <p><input type="hidden" id=${trip["id"]} name="trip-id"></p>
+        <input type="submit">
+    </form>
+    <br><br>
+    `
+    const activityForm = document.getElementById("new-activity-form")
+    activityForm.addEventListener("submit", handleActivityForm)
 }
 
 function handleClickAction(e) {
@@ -117,8 +130,44 @@ function handleClickAction(e) {
     else if (e.target.className === "Add Activity") {
         let id = parseInt(e.target.attributes[1]["nodeValue"])
         addActivity(id)
-
     }
+}
+
+function handleActivityForm(e) {
+    // e.preventDefault
+    const name = document.getElementById("new-activity-name").value
+    const description = document.getElementById("new-activity-description").value
+    const tripId = document.getElementsByName("trip-id")[0]["id"]
+    // console.log("I'm in playaaaaa")
+
+    let newActObj = {
+        name: name,
+        description: description,
+        trip_id: tripId
+    }
+
+    let configObj = {
+        method: 'POST', 
+        headers: {
+            "Content-Type": "application/json", 
+            "Accepts": "application/json"
+        },
+        body: JSON.stringify(newActObj)
+    }
+
+    fetch('http://localhost:3000/activities', configObj)
+    .then(res => res.json())
+    .then(json => {
+        this.addActivityToDom()
+    })
+    activityForm.reset()
+
+}
+
+function addActivityToDom(e) {
+    e.preventDefault
+    console.log("Now i'm over hereeee")
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {

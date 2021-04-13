@@ -1,4 +1,5 @@
 class Activity {
+    static all = []
     constructor(actJSON) {
         this.id = actJSON.id
         this.description = actJSON.description
